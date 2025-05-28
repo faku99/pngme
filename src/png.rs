@@ -1,10 +1,9 @@
 use std::{
     fmt::Display,
-    io::{BufRead, BufReader, ErrorKind, Read},
-    ops::Index,
+    io::{BufReader, Read},
 };
 
-use crate::chunk::{self, Chunk};
+use crate::chunk::Chunk;
 
 struct Png {
     chunks: Vec<Chunk>,
@@ -111,7 +110,6 @@ mod tests {
     use crate::chunk::Chunk;
     use crate::chunk_type::ChunkType;
     use std::convert::TryFrom;
-    use std::str::FromStr;
 
     fn testing_chunks() -> Vec<Chunk> {
         vec![
@@ -156,9 +154,9 @@ mod tests {
             .copied()
             .collect();
 
-        let png = Png::try_from(bytes.as_ref()).unwrap();
+        let png = Png::try_from(bytes.as_ref());
 
-        // assert!(png.is_ok());
+        assert!(png.is_ok());
     }
 
     #[test]
