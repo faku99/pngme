@@ -1,7 +1,4 @@
-use std::{
-    fmt::{Display, Error},
-    str::FromStr,
-};
+use std::{fmt::Display, str::FromStr};
 
 #[derive(Clone, Debug, Eq, PartialEq)]
 pub struct ChunkType {
@@ -79,10 +76,13 @@ impl FromStr for ChunkType {
 
 impl Display for ChunkType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match str::from_utf8(&u32::to_be_bytes(self.type_code)) {
-            Ok(s) => write!(f, "{}", s),
-            Err(_) => Err(Error),
-        }
+        write!(
+            f,
+            "{:?}",
+            String::from_utf8(Vec::<u8>::from(u32::to_be_bytes(self.type_code))).unwrap()
+        )?;
+
+        Ok(())
     }
 }
 
