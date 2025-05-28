@@ -53,7 +53,14 @@ impl Chunk {
     }
 
     pub fn as_bytes(&self) -> Vec<u8> {
-        self.data.clone()
+        self.length
+            .to_be_bytes()
+            .iter()
+            .copied()
+            .chain(self.chunk_type.bytes().iter().cloned())
+            .chain(self.data.iter().cloned())
+            .chain(self.crc.to_be_bytes().iter().cloned())
+            .collect()
     }
 
     fn calculate_crc(chunk_type: &ChunkType, data: &Vec<u8>) -> u32 {
